@@ -79,55 +79,10 @@ router.post(
       data.imageUrl = req.file.cloudStoragePublicUrl;
     }
 
+    res.status(200).send("yay");
+
     // Save the data to the database.
-    // getModel().create(data, (err, savedData) => {
-    //   if (err) {
-    //     next(err);
-    //     return;
-    //   }
-    //   res.redirect(`${req.baseUrl}/${savedData.id}`);
-    // });
-  }
-);
-// [END add]
-
-/**
- * GET /books/:id/edit
- *
- * Display a book for editing.
- */
-router.get('/:book/edit', (req, res, next) => {
-  getModel().read(req.params.book, (err, entity) => {
-    if (err) {
-      next(err);
-      return;
-    }
-    res.render('books/form.jade', {
-      book: entity,
-      action: 'Edit'
-    });
-  });
-});
-
-/**
- * POST /books/:id/edit
- *
- * Update a book.
- */
-router.post(
-  '/:book/edit',
-  images.multer.single('image'),
-  images.sendUploadToGCS,
-  (req, res, next) => {
-    let data = req.body;
-
-    // Was an image uploaded? If so, we'll use its public URL
-    // in cloud storage.
-    if (req.file && req.file.cloudStoragePublicUrl) {
-      req.body.imageUrl = req.file.cloudStoragePublicUrl;
-    }
-
-    getModel().update(req.params.book, data, (err, savedData) => {
+    getModel().create(data, (err, savedData) => {
       if (err) {
         next(err);
         return;
@@ -136,38 +91,7 @@ router.post(
     });
   }
 );
-
-/**
- * GET /books/:id
- *
- * Display a book.
- */
-router.get('/:book', (req, res, next) => {
-  getModel().read(req.params.book, (err, entity) => {
-    if (err) {
-      next(err);
-      return;
-    }
-    res.render('books/view.jade', {
-      book: entity
-    });
-  });
-});
-
-/**
- * GET /books/:id/delete
- *
- * Delete a book.
- */
-router.get('/:book/delete', (req, res, next) => {
-  getModel().delete(req.params.book, (err) => {
-    if (err) {
-      next(err);
-      return;
-    }
-    res.redirect(req.baseUrl);
-  });
-});
+// [END add]
 
 /**
  * Errors on "/books/*" routes.
