@@ -79,7 +79,7 @@ router.post(
       data.imageUrl = req.file.cloudStoragePublicUrl;
     }
 
-    res.status(200).send("yay");
+
 
     // Save the data to the database.
     getModel().create(data, (err, savedData) => {
@@ -87,7 +87,7 @@ router.post(
         next(err);
         return;
       }
-      res.redirect(`${req.baseUrl}/${savedData.id}`);
+      res.status(200).send("yay");
     });
   }
 );
